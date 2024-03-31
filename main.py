@@ -33,7 +33,7 @@ try:
     robot.calibrate(CalibrateMode.AUTO)
 
     # Here we need to run the code to ensure the linear  rail is in the start position
-    print('You still havent written the starting code to ensure linear rail is at start')
+    print('You still have yet to written the starting code to ensure linear rail is at start')
 
     # First lets make sure that we are starting from the sleep position
     # In the first instance we get the current joint angles for all 6 joints
