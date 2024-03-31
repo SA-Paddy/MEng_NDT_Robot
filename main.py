@@ -61,6 +61,7 @@ try:
     # All we are doing here is saving the starting real coordinates to an object incase we need it later
     pose_at_start = robot.get_pose()
 
+    # If we have made it this  far in the code without an error then clearly the connection was succesful
     robot_connected = True
 
 except Exception as e:
