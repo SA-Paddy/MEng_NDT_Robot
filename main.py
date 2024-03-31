@@ -32,6 +32,9 @@ try:
     # Calibrate the robot if required
     robot.calibrate(CalibrateMode.AUTO)
 
+    # Here we need to run the code to ensure the linear  rail is in the start position
+    print('You still havent written the starting code to ensure linear rail is at start')
+
     # First lets make sure that we are starting from the sleep position
     # In the first instance we get the current joint angles for all 6 joints
     # We place this information in an object we call joints_start
@@ -78,9 +81,26 @@ coordinates = Coordinate_Script.main()
 
 # THIS SPACE IS FOR CALLING OUR RELEVANT PROGRAMS
 if robot_connected:
-    Phased_Instructions.Phase_Mov_One()
+    # Our program is subdivided into 5 sections or phases currently
+    # Run the first phase and capture the returned data
+    updated_test_data, last_position_index = Phased_Instructions.Phase_Mov_One()
 
-    # Call Phased_Instructions
+    # Lets create a tuple list to store the coordinates and index
+    # from the last position - this is for error handling
+    Phase_One_Coords_and_Index = (coordinates[last_position_index], last_position_index)
+
+    # Here you need to run the first instruction to move the linear rail
+    print('You still havent written the linear rail run code')
+
+    # Run the second phase and capture the returned data
+    updated_test_data, last_position_index = Phased_Instructions.Phase_Mov_One()
+
+    # Lets create a tuple list to store the coordinates and index
+    # from the last position - this is for error handling
+    Phase_Two_Coords_and_Index = (coordinates[last_position_index], last_position_index)
+
+    # Here  you need to run the second instruction to move the linear rail
+    print('You still havent written the linear rail run code')
 
 else:
     pass
@@ -103,3 +123,4 @@ else:
 # Although the robot has cone to sleep
 # We still need to return the linear rail
 # The following code should handle this
+print('You still havent written the code to return the linear rail to its start position')
