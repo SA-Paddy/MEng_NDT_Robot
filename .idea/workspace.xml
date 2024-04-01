@@ -4,9 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="799c51a4-5d8d-4e96-beb6-82748172bc5a" name="Changes" comment="introduced Phase_Move_Three, as well as updating comments throughout the script to increase explanations of the coding. Additionally re-ordered the coding in main.py as I realised I had the linear move coding points in the wrong place">
+    <list default="true" id="799c51a4-5d8d-4e96-beb6-82748172bc5a" name="Changes" comment="Added the definition for the fourth movement phase and incorporated its instruction into main.py">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Phased_Instructions.py" beforeDir="false" afterPath="$PROJECT_DIR$/Phased_Instructions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -115,7 +116,15 @@
       <option name="project" value="LOCAL" />
       <updated>1711973534045</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Added the definition for the fourth movement phase and incorporated its instruction into main.py">
+      <option name="closed" value="true" />
+      <created>1711975483102</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1711975483102</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -123,6 +132,7 @@
     <MESSAGE value="first push" />
     <MESSAGE value="Updated the second phase of the robot movements as well as incorporating print statements to remind myself to write the linear rail code" />
     <MESSAGE value="introduced Phase_Move_Three, as well as updating comments throughout the script to increase explanations of the coding. Additionally re-ordered the coding in main.py as I realised I had the linear move coding points in the wrong place" />
-    <option name="LAST_COMMIT_MESSAGE" value="introduced Phase_Move_Three, as well as updating comments throughout the script to increase explanations of the coding. Additionally re-ordered the coding in main.py as I realised I had the linear move coding points in the wrong place" />
+    <MESSAGE value="Added the definition for the fourth movement phase and incorporated its instruction into main.py" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added the definition for the fourth movement phase and incorporated its instruction into main.py" />
   </component>
 </project>

@@ -114,7 +114,7 @@ if robot_connected:
 
     # Our program is subdivided into 5 sections or phases currently
     # Run the first phase and capture the returned data
-    updated_test_data, last_position_index = Phased_Instructions.Phase_Mov_One()
+    updated_test_data, last_position_index = Phased_Instructions.Phase_Move_One()
 
     # Lets create a tuple list to store the coordinates and index
     # from the last position - this is for error handling
@@ -124,7 +124,7 @@ if robot_connected:
     print('You still havent written the linear rail run code')
 
     # Run the second phase and capture the returned data
-    updated_test_data, last_position_index = Phased_Instructions.Phase_Mov_Two()
+    updated_test_data, last_position_index = Phased_Instructions.Phase_Move_Two()
 
     # Lets create a tuple list to store the coordinates and index
     # from the last position - this is for error handling
@@ -134,7 +134,7 @@ if robot_connected:
     print('You still havent written the linear rail run code')
 
     # Run the third phase and capture the returned data
-    updated_test_data, last_position_index = Phased_Instructions.Phase_Mov_Three()
+    updated_test_data, last_position_index = Phased_Instructions.Phase_Move_Three()
 
     # Lets create a tuple list to store the coordinates and index
     # from the last position - this is for error handling
@@ -144,11 +144,22 @@ if robot_connected:
     print('You still havent written the linear rail run code')
 
     # Run the fourth phase and capture the returned data
-    updated_test_data, last_position_index = Phased_Instructions.Phase_Mov_Four()
+    updated_test_data, last_position_index = Phased_Instructions.Phase_Move_Four()
 
     # Lets create a tuple list to store the coordinates and index
     # from the last position - this is for error handling
     Phase_Four_Coords_and_Index = (coordinates[last_position_index], last_position_index)
+
+    # Here  you need to run the fifth instruction to move the linear rail to position (0, 600)
+    print('You still havent written the linear rail run code')
+
+    # Run the fourth phase and capture the returned data
+    updated_test_data, last_position_index = Phased_Instructions.Phase_Move_Five()
+
+    # Lets create a tuple list to store the coordinates and index
+    # from the last position - this is for error handling
+    Phase_Five_Coords_and_Index = (coordinates[last_position_index], last_position_index)
+
 
 else:
     pass
@@ -174,3 +185,4 @@ else:
 # We still need to return the linear rail
 # The following code should handle this
 print('You still havent written the code to return the linear rail to its start position')
+print('if your coordinate system appears messed up  in your datat - it might be due to you not having the get pose argument before adjustment in corrected coordinates')
