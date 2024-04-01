@@ -140,7 +140,15 @@ if robot_connected:
     # from the last position - this is for error handling
     Phase_Three_Coords_and_Index = (coordinates[last_position_index], last_position_index)
 
+    # Here  you need to run the fourth instruction to move the linear rail to position (0, 975)
+    print('You still havent written the linear rail run code')
 
+    # Run the fourth phase and capture the returned data
+    updated_test_data, last_position_index = Phased_Instructions.Phase_Mov_Four()
+
+    # Lets create a tuple list to store the coordinates and index
+    # from the last position - this is for error handling
+    Phase_Four_Coords_and_Index = (coordinates[last_position_index], last_position_index)
 
 else:
     pass
