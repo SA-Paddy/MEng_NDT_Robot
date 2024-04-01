@@ -1,3 +1,27 @@
+# We would recommend you run this project through PyCharm.
+# PyCharm community is  free to download from their download section on their website
+# Import the relevant libraries or python files that will be needed to run this code
+# These are needed due to dependencies on them for functions or classes or data processing types
+# This whole project runs in a virtual environment - so until it is packaged into an .exe
+# We will be required to install some of the packages everytime we look to run on a new computer
+# Or everytime we run it on an LSBU computer
+# First and foremost navigate to the 'terminal' window at the bottom of PyCharm
+# Either copy and paste the following or type it in the terminal window:
+# python -m pip install --upgrade pip
+# Once the latest pip installer is installed copy or type  the following:
+# git clone https://github.com/LSBU-Electronics-Lab/ApiTCP_Python_NiryoOne.git
+# This will add a new folder in your project called ApiTCP_Python_NiryoOne
+# Right click on this folder, go to the bottom of the menu and mark directory as a sources root
+# Expand the ApiTCP_Python_NiryoOne folder and find the subfolder named niryo_one_tcp_client
+# Right click on this folder, go to the bottom of  the menu and mark directory as a sources root
+# Next go back to the terminal and type or copy the following (for each one - wait for it to finish installing before moving  on to the next):
+# pip install numpy
+# pip install serial
+# pip install math
+# pip install time
+# You may get error messages saying that it could not find a version that satisfies
+# If you do - dont stress - this just means that the latest version is already probably installed
+
 from niryo_one_tcp_client import *
 import Coordinate_Script
 import Phased_Instructions
@@ -64,6 +88,8 @@ try:
     # If we have made it this  far in the code without an error then clearly the connection was succesful
     robot_connected = True
 
+# All this code does is 'handle errors gracefully'
+# Any error is caught in the object e which can then be printed as a  message to aid in debugging
 except Exception as e:
     print("failed to connect: ", e)
 
@@ -82,6 +108,10 @@ coordinates = Coordinate_Script.main()
 
 # THIS SPACE IS FOR CALLING OUR RELEVANT PROGRAMS
 if robot_connected:
+
+    # Here you need to run the first instruction to move the linear rail to position (0, 325)
+    print('You still havent written the linear rail run code')
+
     # Our program is subdivided into 5 sections or phases currently
     # Run the first phase and capture the returned data
     updated_test_data, last_position_index = Phased_Instructions.Phase_Mov_One()
@@ -90,23 +120,34 @@ if robot_connected:
     # from the last position - this is for error handling
     Phase_One_Coords_and_Index = (coordinates[last_position_index], last_position_index)
 
-    # Here you need to run the first instruction to move the linear rail
+    # Here  you need to run the second instruction to move the linear rail to position (0, 650)
     print('You still havent written the linear rail run code')
 
     # Run the second phase and capture the returned data
-    updated_test_data, last_position_index = Phased_Instructions.Phase_Mov_One()
+    updated_test_data, last_position_index = Phased_Instructions.Phase_Mov_Two()
 
     # Lets create a tuple list to store the coordinates and index
     # from the last position - this is for error handling
     Phase_Two_Coords_and_Index = (coordinates[last_position_index], last_position_index)
 
-    # Here  you need to run the second instruction to move the linear rail
+    # Here  you need to run the third instruction to move the linear rail to position (0, 975)
     print('You still havent written the linear rail run code')
+
+    # Run the third phase and capture the returned data
+    updated_test_data, last_position_index = Phased_Instructions.Phase_Mov_Three()
+
+    # Lets create a tuple list to store the coordinates and index
+    # from the last position - this is for error handling
+    Phase_Three_Coords_and_Index = (coordinates[last_position_index], last_position_index)
+
+
 
 else:
     pass
 
 
+# Closing down the robot - we still only want to execute this if the object
+# robot_connected is True
 if robot_connected:
 
     # This is now the end of the code
