@@ -1,23 +1,21 @@
 # Run a menu loop
 def men():
 
-    global choice
-
     print("\nMenu:")
     print("1. Only run a theoretical test model")
     print("2. Undertake analysis of a saved file")
-    print("3. Run a full test")
+    print("3. Continue with Script")
     print("4. Exit")
 
-    choice = input("Enter your choice (1-4): ")
+    choice = int(input("Enter your choice (1-4): "))
 
-    if choice == '1':
+    if choice == 1:
         print('running theoretical test only')
-    elif choice == '2':
+    elif choice == 2:
         print('running analysis module')
-    elif choice == '3':
+    elif choice == 3:
         print('running full test')
-    elif choice == '4':
+    elif choice == 4:
         print("Exiting the program.")
         exit()
     else:

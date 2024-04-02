@@ -12,26 +12,32 @@
 # git clone https://github.com/LSBU-Electronics-Lab/ApiTCP_Python_NiryoOne.git
 # This will add a new folder in your project called ApiTCP_Python_NiryoOne
 # Right click on this folder, go to the bottom of the menu and mark directory as a sources root
-# Expand the ApiTCP_Python_NiryoOne folder and find the subfolder named niryo_one_tcp_client
+# Expand the ApiTCP_Python_NiryoOne folder and find the sub-folder named niryo_one_tcp_client
 # Right click on this folder, go to the bottom of  the menu and mark directory as a sources root
-# Next go back to the terminal and type or copy the following (for each one - wait for it to finish installing before moving  on to the next):
+# Next go back to the terminal and type or copy the following
+# (for each one - wait for it to finish installing before moving  on to the next):
 # pip install numpy
 # pip install serial
-# pip install math
-# pip install time
+# pip install seaborn
+# pip install pandas
 # You may get error messages saying that it could not find a version that satisfies
 # If you do - dont stress - this just means that the latest version is already probably installed
 
-#------------ potential errors
+# ------------ potential errors
 # 1. You may need to update your phased move instructions by passing variables from here to there
 # 2. if your coordinate system appears messed up  in your data -
 #    it might be due to you not having the get pose argument before adjustment in corrected coordinates
-#------------
+# ------------
 
 from niryo_one_tcp_client import *
 import Coordinate_Script
 import Phased_Instructions
 import Linear_Rail_Instructions
+import pandas as pd
+import seaborn as sns
+import tkinter as tk
+from tkinter import filedialog
+import Menu
 import serial
 import time
 import numpy as np
@@ -40,6 +46,10 @@ import math
 
 # Here I am just creating a list that holds the updated test data
 updated_test_data = []
+
+# Create the menu logic objects
+t_test_only = None
+file_analysis = None
 
 # Determine the correct IP Address for the Niryo Robot an insert in the quotes
 robot_ip_address = input("Please enter the IP address of your robot: ", )
@@ -92,7 +102,7 @@ try:
     # All we are doing here is saving the starting real coordinates to an object incase we need it later
     pose_at_start = robot.get_pose()
 
-    # If we have made it this  far in the code without an error then clearly the connection was succesful
+    # If we have made it this  far in the code without an error then clearly the connection was successful
     robot_connected = True
 
 # All this code does is 'handle errors gracefully'
@@ -109,9 +119,73 @@ if not robot_connected:
     if continue_response != "yes":
         print("Aborting Script")
         exit()
+    else:
+        pass
 
-# Call and run the coordinates script - taking the output for our testing coordinates
-coordinates = Coordinate_Script.main()
+# Now lets call the menu function
+menu_choice = Menu.men()
+print(f"Menu Choice: {menu_choice}")
+
+# Menu logic
+if menu_choice == 1:
+    t_test_only = True
+    robot_connected = False
+elif menu_choice == 2:
+    file_analysis = True
+    robot_connected = False
+elif menu_choice ==3:
+    t_test_only = True
+else:
+    pass
+
+# I have commented out the following print commands as they are really only used for debugging
+# print('t_test_only: ', t_test_only)
+# print('file_analysis: ', file_analysis)
+# print('robot_connected', robot_connected)
+
+# Create a conditional statement that reacts to the menu choice
+if file_analysis == True:
+    # Create a Tkinter root window
+    root = tk.Tk()
+    # I have commented out the following code as I found that hiding the window just made for confusion
+    #root.withdraw()
+
+    # Ask the user to select a CSV file using a file dialog
+    csv_file = filedialog.askopenfilename(title="Select CSV File", filetypes=[("CSV files", "*.csv")])
+
+    # Check if the user selected a file
+    if not csv_file:
+        print("No file selected. Exiting.")
+        exit()
+    else:
+        pass
+
+    # load the CSV data into a panda data frame
+    df = pd.read_csv(csv_file)
+
+    # pivot the data to create a 2D array
+    heatmap_data = df.pivot(index='y_coordinate', columns='x_coordinate', values='sensor_value')
+
+    # create the heatmap using seaborn
+    plt.figure(figsize=(10, 8))
+    plt.title('Heatmap of Sensor Data')
+    sns.heatmap(heatmap_data, cmap='coolwarm', annot=True, fmt=".1f", cbar_kws={'label': 'Sensor Values'})
+
+    # output the map
+    plt.show()
+
+else:
+    pass
+
+# Conditional statement that reacts to the menu choice
+if t_test_only == True:
+
+    # Call and run the coordinates script - taking the output for our testing coordinates
+    coordinates = Coordinate_Script.main()
+
+else:
+    pass
+
 
 # THIS SPACE IS FOR CALLING OUR RELEVANT PROGRAMS
 if robot_connected:
@@ -190,11 +264,31 @@ if robot_connected:
 
     # We disconnect from the robot
     robot.quit()
+
+    # Although the robot has cone to sleep
+    # We still need to return the linear rail
+    # The following code should handle this
+    travel_dist_global = 600
+    Linear_Rail_Instructions.linear_rail_move(travel_dist_global, clockwise=False)
+
+    # Now output the data as a pandas data frame so that it can be saved to csv
+    df = pd.DataFrame(updated_test_data, columns=['x coordinate', 'y coordinate', 'Sensor Value'])
+
+    # Create the root window and hide it
+    root = tk.Tk()
+    #root.withdraw()
+
+    # Ask the user where to save
+    csv_file = filedialog.asksaveasfilename(defaultextension=".csv", filetypes=[("CSV files", "*.csv")])
+
+    # If the user exits or cancels then cancel the operation
+    if not csv_file:
+        print("Save canceled. Exiting.")
+        exit()
+
+    # Save the CSV
+    df.to_csv(csv_file, index=False)
+
 else:
     pass
 
-# Although the robot has cone to sleep
-# We still need to return the linear rail
-# The following code should handle this
-travel_dist_global = 600
-Linear_Rail_Instructions.linear_rail_move(travel_dist_global, clockwise=False)
