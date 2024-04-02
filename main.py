@@ -22,9 +22,16 @@
 # You may get error messages saying that it could not find a version that satisfies
 # If you do - dont stress - this just means that the latest version is already probably installed
 
+#------------ potential errors
+# 1. You may need to update your phased move instructions by passing variables from here to there
+# 2. if your coordinate system appears messed up  in your data -
+#    it might be due to you not having the get pose argument before adjustment in corrected coordinates
+#------------
+
 from niryo_one_tcp_client import *
 import Coordinate_Script
 import Phased_Instructions
+import Linear_Rail_Instructions
 import serial
 import time
 import numpy as np
@@ -110,7 +117,8 @@ coordinates = Coordinate_Script.main()
 if robot_connected:
 
     # Here you need to run the first instruction to move the linear rail to position (0, 325)
-    print('You still havent written the linear rail run code')
+    travel_dist_global = 325
+    Linear_Rail_Instructions.linear_rail_move(travel_dist_global, clockwise=True)
 
     # Our program is subdivided into 5 sections or phases currently
     # Run the first phase and capture the returned data
@@ -121,7 +129,8 @@ if robot_connected:
     Phase_One_Coords_and_Index = (coordinates[last_position_index], last_position_index)
 
     # Here  you need to run the second instruction to move the linear rail to position (0, 650)
-    print('You still havent written the linear rail run code')
+    travel_dist_global = 325
+    Linear_Rail_Instructions.linear_rail_move(travel_dist_global, clockwise=True)
 
     # Run the second phase and capture the returned data
     updated_test_data, last_position_index = Phased_Instructions.Phase_Move_Two()
@@ -131,7 +140,8 @@ if robot_connected:
     Phase_Two_Coords_and_Index = (coordinates[last_position_index], last_position_index)
 
     # Here  you need to run the third instruction to move the linear rail to position (0, 975)
-    print('You still havent written the linear rail run code')
+    travel_dist_global = 325
+    Linear_Rail_Instructions.linear_rail_move(travel_dist_global, clockwise=True)
 
     # Run the third phase and capture the returned data
     updated_test_data, last_position_index = Phased_Instructions.Phase_Move_Three()
@@ -140,8 +150,9 @@ if robot_connected:
     # from the last position - this is for error handling
     Phase_Three_Coords_and_Index = (coordinates[last_position_index], last_position_index)
 
-    # Here  you need to run the fourth instruction to move the linear rail to position (0, 975)
-    print('You still havent written the linear rail run code')
+    # Here  you need to run the fourth instruction to move the linear rail to position (0, 375)
+    travel_dist_global = 600
+    Linear_Rail_Instructions.linear_rail_move(travel_dist_global, clockwise=False)
 
     # Run the fourth phase and capture the returned data
     updated_test_data, last_position_index = Phased_Instructions.Phase_Move_Four()
@@ -151,7 +162,8 @@ if robot_connected:
     Phase_Four_Coords_and_Index = (coordinates[last_position_index], last_position_index)
 
     # Here  you need to run the fifth instruction to move the linear rail to position (0, 600)
-    print('You still havent written the linear rail run code')
+    travel_dist_global = 225
+    Linear_Rail_Instructions.linear_rail_move(travel_dist_global, clockwise=True)
 
     # Run the fourth phase and capture the returned data
     updated_test_data, last_position_index = Phased_Instructions.Phase_Move_Five()
@@ -184,5 +196,5 @@ else:
 # Although the robot has cone to sleep
 # We still need to return the linear rail
 # The following code should handle this
-print('You still havent written the code to return the linear rail to its start position')
-print('if your coordinate system appears messed up  in your datat - it might be due to you not having the get pose argument before adjustment in corrected coordinates')
+travel_dist_global = 600
+Linear_Rail_Instructions.linear_rail_move(travel_dist_global, clockwise=False)
