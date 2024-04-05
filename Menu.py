@@ -1,4 +1,4 @@
-# Run a menu loop
+# Run a menu loop today
 def men():
 
     print("\nMenu:")
