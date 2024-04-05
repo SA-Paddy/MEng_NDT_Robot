@@ -1,4 +1,5 @@
-# Run a menu loop today
+# Run a menu loop
+
 def men():
 
     print("\nMenu:")
@@ -17,7 +18,6 @@ def men():
         print('running full test')
     elif choice == 4:
         print("Exiting the program.")
-        exit()
     else:
         print("Invalid choice. Please enter a number between 1 and 4.")
 
