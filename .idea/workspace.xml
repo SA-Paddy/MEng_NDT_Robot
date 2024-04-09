@@ -4,7 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="799c51a4-5d8d-4e96-beb6-82748172bc5a" name="Changes" comment="Updated Substitue to Incorporate Changes Made At University">
+    <list default="true" id="799c51a4-5d8d-4e96-beb6-82748172bc5a" name="Changes" comment="Updated Test-1 to Incorporate Changes Made At University">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -23,7 +24,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="master" />
+        <entry key="$PROJECT_DIR$" value="Test-1" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -60,22 +61,22 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
-    &quot;Python.Basic_robot_move_script.executor&quot;: &quot;Run&quot;,
-    &quot;Python.Coordinate_Script.executor&quot;: &quot;Run&quot;,
-    &quot;Python.Linear_Rail_Instructions.executor&quot;: &quot;Run&quot;,
-    &quot;Python.Menu.executor&quot;: &quot;Run&quot;,
-    &quot;Python.Phased_Instructions.executor&quot;: &quot;Run&quot;,
-    &quot;Python.main.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;Substitute&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "Python.Basic_robot_move_script.executor": "Run",
+    "Python.Coordinate_Script.executor": "Run",
+    "Python.Linear_Rail_Instructions.executor": "Run",
+    "Python.Menu.executor": "Run",
+    "Python.Phased_Instructions.executor": "Run",
+    "Python.main.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "Test-1",
+    "ignore.virus.scanning.warn.message": "true",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\Program Files (x86)\Python Libraries\MEng_NDT_Robot" />
@@ -194,7 +195,15 @@
       <option name="project" value="LOCAL" />
       <updated>1712696246984</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Updated Test-1 to Incorporate Changes Made At University">
+      <option name="closed" value="true" />
+      <created>1712697187739</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1712697187739</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -207,6 +216,7 @@
     <MESSAGE value="Added Linear Rail Movement master code as well as incorporating into main.py - additionally updated comments in main.py to include possible errors we may encounter during testing which will require coding alterations" />
     <MESSAGE value="Incorporated the Menu, as well as the csv file save function and the csv read function" />
     <MESSAGE value="Updated Substitue to Incorporate Changes Made At University" />
-    <option name="LAST_COMMIT_MESSAGE" value="Updated Substitue to Incorporate Changes Made At University" />
+    <MESSAGE value="Updated Test-1 to Incorporate Changes Made At University" />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated Test-1 to Incorporate Changes Made At University" />
   </component>
 </project>

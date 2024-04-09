@@ -58,6 +58,7 @@ import math
 # also - the robot cant sustain an interaction closer than .12m or further than .43m
 # So I will need to use a mathematical expression and argument to adjust for the additional 200mm being added
 # by our extension arm
+# IN this particular branch we test encapsulation
 def Phase_Move_One(coordinates, sleep_joints):
     # Rotate the robot by 90 degrees clockwise (might not be needed now)
     #robot.move_joints(-1.57, sleep_joints[1], sleep_joints[2], sleep_joints[3], sleep_joints[4], sleep_joints[5])
@@ -70,14 +71,16 @@ def Phase_Move_One(coordinates, sleep_joints):
     global updated_test_data
 
     # Extract tuples where y is equal to or less than 0.2
-    filtered_coordinates = [coord for coord in coordinates if coord[1] >= 0.2]
+    # filtered_coordinates = [coord for coord in coordinates if coord[1] >= 0.2]
 
     # This code creates a for loop
     # Please see phase two for more detailed comments explaining how it works
-    for index, (x, y) in enumerate(filtered_coordinates):
+    for index, (x, y) in enumerate(coordinates):
+        if y > 0.25:
+            break
 
         # We move the robot to the first pose
-        robot.move_pose(x, y, 0.1, 0.0, 0.0, 0.0)
+        robot_move_function(x,y)
 
         # We read the value from the arduino
         # First establish the serial connection
@@ -115,6 +118,12 @@ def Phase_Move_One(coordinates, sleep_joints):
 
             # We then update the last_position_index object with the current index value
             last_position_index = index
+
+# Robot Move Function
+def robot_move_function(x, y)
+    robot.move_pose(x, y, 0.1, 0.0, 0.0, 0.0)
+    pass
+
 
 # Here I am just creating a list that holds the updated test data
 updated_test_data = []
