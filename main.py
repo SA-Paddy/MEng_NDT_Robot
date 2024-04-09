@@ -43,7 +43,21 @@ import numpy as np
 import matplotlib.pyplot as plt
 import math
 
-
+# So we originally started of defining each element in its own Py file and then importing the functions - however
+# This has caused considerable drama - so instead I am going to define everything in one py file
+# Lets start with the first function definition
+# in GitHub - under test branch - I have successfully proven the base code and got it working
+# So I am using this to try and figure out the problems that the base code has
+# The issues incorporate logic problems surrounding the unpacking of the coordinates - and indexing.
+# When I nest if loops inside for loops - the robot API code wont work for some reason.
+# So instead I want to consider two working methodologies:
+# Encapsulation or alternatively
+# Unpack, separate into multiple x and y arguments - and pass relevant arguments to relevant functions
+# If either of these work - it will enable me to segregate the coordinates based upon the robot move functions
+# I need to bear in mind that coordinates are being provided in mm where the robot operates in m
+# also - the robot cant sustain an interaction closer than .12m or further than .43m
+# So I will need to use a mathematical expression and argument to adjust for the additional 200mm being added
+# by our extension arm
 def Phase_Move_One(coordinates, sleep_joints):
     # Rotate the robot by 90 degrees clockwise (might not be needed now)
     #robot.move_joints(-1.57, sleep_joints[1], sleep_joints[2], sleep_joints[3], sleep_joints[4], sleep_joints[5])
