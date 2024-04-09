@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="799c51a4-5d8d-4e96-beb6-82748172bc5a" name="Changes" comment="Added Linear Rail Movement master code as well as incorporating into main.py - additionally updated comments in main.py to include possible errors we may encounter during testing which will require coding alterations" />
+    <list default="true" id="799c51a4-5d8d-4e96-beb6-82748172bc5a" name="Changes" comment="Incorporated the Menu, as well as the csv file save function and the csv read function">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -19,6 +21,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="ROOT_SYNC" value="DONT_SYNC" />
   </component>
@@ -38,6 +45,9 @@
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 4
@@ -61,7 +71,7 @@
     "Python.main.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "master",
+    "git-widget-placeholder": "Substitute",
     "ignore.virus.scanning.warn.message": "true",
     "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
   }
@@ -168,7 +178,15 @@
       <option name="project" value="LOCAL" />
       <updated>1712071695980</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Incorporated the Menu, as well as the csv file save function and the csv read function">
+      <option name="closed" value="true" />
+      <created>1712080343975</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1712080343975</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -179,6 +197,7 @@
     <MESSAGE value="Added the definition for the fourth movement phase and incorporated its instruction into main.py" />
     <MESSAGE value="Added the definition for the fifth movement phase and incorporated its instruction into main.py" />
     <MESSAGE value="Added Linear Rail Movement master code as well as incorporating into main.py - additionally updated comments in main.py to include possible errors we may encounter during testing which will require coding alterations" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added Linear Rail Movement master code as well as incorporating into main.py - additionally updated comments in main.py to include possible errors we may encounter during testing which will require coding alterations" />
+    <MESSAGE value="Incorporated the Menu, as well as the csv file save function and the csv read function" />
+    <option name="LAST_COMMIT_MESSAGE" value="Incorporated the Menu, as well as the csv file save function and the csv read function" />
   </component>
 </project>
