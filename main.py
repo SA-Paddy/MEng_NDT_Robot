@@ -31,7 +31,6 @@
 
 from niryo_one_tcp_client import *
 import Coordinate_Script
-import Phased_Instructions
 import Linear_Rail_Instructions
 import pandas as pd
 import seaborn as sns
@@ -44,14 +43,72 @@ import numpy as np
 import matplotlib.pyplot as plt
 import math
 
+
+def Phase_Move_One(coordinates, sleep_joints):
+    # Rotate the robot by 90 degrees clockwise (might not be needed now)
+    #robot.move_joints(-1.57, sleep_joints[1], sleep_joints[2], sleep_joints[3], sleep_joints[4], sleep_joints[5])
+    # Allow enough time for the movement to take effect
+    #time.sleep(1)
+
+    # Declare coordinates as a global variable
+
+    global last_position_index
+    global updated_test_data
+
+    # Extract tuples where y is equal to or less than 0.2
+    filtered_coordinates = [coord for coord in coordinates if coord[1] >= 0.2]
+
+    # This code creates a for loop
+    # Please see phase two for more detailed comments explaining how it works
+    for index, (x, y) in enumerate(filtered_coordinates):
+
+        # We move the robot to the first pose
+        robot.move_pose(x, y, 0.1, 0.0, 0.0, 0.0)
+
+        # We read the value from the arduino
+        # First establish the serial connection
+        arduinoData = serial.Serial('com16', 115200)
+
+        # Allow time for the connection to stabilise
+        time.sleep(3)
+
+        # Check to see if there is data available
+        if arduinoData.inWaiting() > 0:
+            # Strip the data packet down to only a float
+            datapacket = arduinoData.readline().decode('utf-8').strip('\r\n')
+            # Store the data locally as a float
+
+            print("Received data from Arduino:", datapacket)
+
+            sensor_value = float(datapacket)
+
+            # Close the connection to the Arduino
+            arduinoData.close()
+            serial.Serial('com16', 115200).close()
+            time.sleep(3)
+
+            # Because we altered the coordinate system earlier in this code
+            # We now need to remove our alteration before saving to the
+            # Test data holder
+            corrected_x = x
+            corrected_y = y
+
+            # Here we just append the data to the object called updated_test_data
+            # The formatting ((variable/s)) defines this as a Tuple list
+            # The benefit of using a Tuple list is that it is immutable
+            # All this means is that once the data is created it cant be altered
+            updated_test_data.append((corrected_x, corrected_y, sensor_value))
+
+            # We then update the last_position_index object with the current index value
+            last_position_index = index
+
 # Here I am just creating a list that holds the updated test data
 updated_test_data = []
-
-#hello world
 
 # Create the menu logic objects
 t_test_only = None
 file_analysis = None
+exit_op = None
 
 # Determine the correct IP Address for the Niryo Robot an insert in the quotes
 robot_ip_address = input("Please enter the IP address of your robot: ", )
@@ -62,6 +119,9 @@ robot = NiryoOneClient()
 
 # Define the sleep position - this is the position we send the robot into when we are done
 sleep_joints = [0.0, 0.55, -1.2, 0.0, 0.0, 0.0]
+
+last_position_index = 0
+current_y  = 0
 
 # Create an object that we can use for error handling if the robot cant connect
 robot_connected = False
@@ -137,8 +197,28 @@ elif menu_choice == 2:
     robot_connected = False
 elif menu_choice ==3:
     t_test_only = True
+elif menu_choice ==4:
+    exit_op = True
 else:
     pass
+
+if exit_op == True:
+    try:
+        # This is now the end of the code
+        # So we send the robot to the sleep_joints position
+        robot.move_joints(*sleep_joints)
+
+        # We set learning mode to true (this is what basically releases the torque in the motors)
+        robot.set_learning_mode(True)
+
+        # We disconnect from the robot
+        robot.quit()
+    except Exception as b:
+        print('Couldnt Disconnect Robot', b)
+        print('Aborting Program')
+        exit()
+    else:
+        pass
 
 # I have commented out the following print commands as they are really only used for debugging
 # print('t_test_only: ', t_test_only)
@@ -147,6 +227,9 @@ else:
 
 # Create a conditional statement that reacts to the menu choice
 if file_analysis == True:
+
+    robot.set_learning_mode(True)
+
     # Create a Tkinter root window
     root = tk.Tk()
     # I have commented out the following code as I found that hiding the window just made for confusion
@@ -185,6 +268,8 @@ if t_test_only == True:
     # Call and run the coordinates script - taking the output for our testing coordinates
     coordinates = Coordinate_Script.main()
 
+    robot.set_learning_mode(True)
+
 else:
     pass
 
@@ -192,61 +277,64 @@ else:
 # THIS SPACE IS FOR CALLING OUR RELEVANT PROGRAMS
 if robot_connected:
 
+    robot.set_learning_mode(False)
+
     # Here you need to run the first instruction to move the linear rail to position (0, 325)
-    travel_dist_global = 325
-    Linear_Rail_Instructions.linear_rail_move(travel_dist_global, clockwise=True)
+    #travel_dist_global = 325
+    #Linear_Rail_Instructions.linear_rail_move(travel_dist_global, clockwise=True)
 
     # Our program is subdivided into 5 sections or phases currently
     # Run the first phase and capture the returned data
-    updated_test_data, last_position_index = Phased_Instructions.Phase_Move_One()
+
+    Phase_Move_One(coordinates, sleep_joints)
 
     # Lets create a tuple list to store the coordinates and index
     # from the last position - this is for error handling
     Phase_One_Coords_and_Index = (coordinates[last_position_index], last_position_index)
 
     # Here  you need to run the second instruction to move the linear rail to position (0, 650)
-    travel_dist_global = 325
-    Linear_Rail_Instructions.linear_rail_move(travel_dist_global, clockwise=True)
+    #travel_dist_global = 325
+    #Linear_Rail_Instructions.linear_rail_move(travel_dist_global, clockwise=True)
 
     # Run the second phase and capture the returned data
-    updated_test_data, last_position_index = Phased_Instructions.Phase_Move_Two()
+    #updated_test_data, last_position_index = Phased_Instructions.Phase_Move_Two()
 
     # Lets create a tuple list to store the coordinates and index
     # from the last position - this is for error handling
-    Phase_Two_Coords_and_Index = (coordinates[last_position_index], last_position_index)
+    #Phase_Two_Coords_and_Index = (coordinates[last_position_index], last_position_index)
 
     # Here  you need to run the third instruction to move the linear rail to position (0, 975)
-    travel_dist_global = 325
-    Linear_Rail_Instructions.linear_rail_move(travel_dist_global, clockwise=True)
+    #travel_dist_global = 325
+    #Linear_Rail_Instructions.linear_rail_move(travel_dist_global, clockwise=True)
 
     # Run the third phase and capture the returned data
-    updated_test_data, last_position_index = Phased_Instructions.Phase_Move_Three()
+    #updated_test_data, last_position_index = Phased_Instructions.Phase_Move_Three()
 
     # Lets create a tuple list to store the coordinates and index
     # from the last position - this is for error handling
-    Phase_Three_Coords_and_Index = (coordinates[last_position_index], last_position_index)
+    #Phase_Three_Coords_and_Index = (coordinates[last_position_index], last_position_index)
 
     # Here  you need to run the fourth instruction to move the linear rail to position (0, 375)
-    travel_dist_global = 600
-    Linear_Rail_Instructions.linear_rail_move(travel_dist_global, clockwise=False)
+    #travel_dist_global = 600
+    #Linear_Rail_Instructions.linear_rail_move(travel_dist_global, clockwise=False)
 
     # Run the fourth phase and capture the returned data
-    updated_test_data, last_position_index = Phased_Instructions.Phase_Move_Four()
+    #updated_test_data, last_position_index = Phased_Instructions.Phase_Move_Four()
 
     # Lets create a tuple list to store the coordinates and index
     # from the last position - this is for error handling
-    Phase_Four_Coords_and_Index = (coordinates[last_position_index], last_position_index)
+    #Phase_Four_Coords_and_Index = (coordinates[last_position_index], last_position_index)
 
     # Here  you need to run the fifth instruction to move the linear rail to position (0, 600)
-    travel_dist_global = 225
-    Linear_Rail_Instructions.linear_rail_move(travel_dist_global, clockwise=True)
+    #travel_dist_global = 225
+    #Linear_Rail_Instructions.linear_rail_move(travel_dist_global, clockwise=True)
 
     # Run the fourth phase and capture the returned data
-    updated_test_data, last_position_index = Phased_Instructions.Phase_Move_Five()
+    #updated_test_data, last_position_index = Phased_Instructions.Phase_Move_Five()
 
     # Lets create a tuple list to store the coordinates and index
     # from the last position - this is for error handling
-    Phase_Five_Coords_and_Index = (coordinates[last_position_index], last_position_index)
+    #Phase_Five_Coords_and_Index = (coordinates[last_position_index], last_position_index)
 
 
 else:
@@ -271,10 +359,12 @@ if robot_connected:
     # We still need to return the linear rail
     # The following code should handle this
     travel_dist_global = 600
-    Linear_Rail_Instructions.linear_rail_move(travel_dist_global, clockwise=False)
+    #Linear_Rail_Instructions.linear_rail_move(travel_dist_global, clockwise=False)
+
+    print("updated_test_data:", updated_test_data)
 
     # Now output the data as a pandas data frame so that it can be saved to csv
-    df = pd.DataFrame(updated_test_data, columns=['x coordinate', 'y coordinate', 'Sensor Value'])
+    df = pd.DataFrame(updated_test_data, columns=['x_coordinate', 'y_coordinate', 'sensor_value'])
 
     # Create the root window and hide it
     root = tk.Tk()
@@ -293,4 +383,3 @@ if robot_connected:
 
 else:
     pass
-
