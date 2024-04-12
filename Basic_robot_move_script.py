@@ -19,7 +19,7 @@
 from niryo_one_tcp_client import *
 
 # Determine the correct IP Address for the Niryo Robot an insert in the quotes
-robot_ip_address = "192.168.1.104"
+robot_ip_address = "192.168.1.106"
 
 # Create an object called robot defining the NiryoOne robot
 # From here on out we can just refer to this object as robot
@@ -71,15 +71,20 @@ def ndt1():
     # I will now move the end effector (the TCP) to the following cartesian (real world) point
     # Note that the x, y & z values are provided in metres
     # The roll, pitch and yaw are provided in radians
-    robot.move_pose(0.427, 0., 0.14, 0., 1.57, 0.0)
+
+    #robot.move_pose(-.0, -0.2, 0.23, -0.052, 0.715, -1.563)
+    my_joints = robot.get_joints()
+    robot.move_joints(-1.56367106511, -0.248965312548, -0.609601007311, -0.00153588974176, 0.18, -1.563)
+    my_position = robot.get_pose()
+    print(my_position)
 
     # Because this is a test code - I want to see the impact of every alteration I make
     # I have therefore included the following which needs me to hit the enter button before it will continue
     # Note - If running the program from Pycharm - you need to click on the Python run window
     # where it asks you if you want to continue - before you hit enter - otherwise you will just place a hard return
     # inside the code here
-    input("press enter to continue")
-    print("continuing")
+    #input("press enter to continue")
+    #print("continuing")
 
     # Now as per my video - having extended the arm out to my first pose
     # I now wanted to rotate it - to do so, I need to move from a cartesian space command to a joints space command
@@ -91,35 +96,35 @@ def ndt1():
     joints_list1 = joints1[1]
 
     # Here we are printing the joint angles (in radians) in the python run console just for information purposes
-    print("joints list:", joints_list1)
+    #print("joints list:", joints_list1)
 
     # Putting in a user input to continue if we are happy
-    input("press enter to continue")
-    print("continuing")
+    #input("press enter to continue")
+    #print("continuing")
 
     # Within our object joints_list1 we are replacing the first angle with a number of our choice (in radians)
     # This will rotate the robot about the base
     # A negative value will rotate clockwise
     # A positive value will rotate anti-clockwise
     # We have found that maximum rotation is 3 radians (just shy of pi)
-    joints_list1[0] = 3
+    #joints_list1[0] = 3
 
     # Now we move the robot in joints space, assigning the value of each joint from our list
     # lists always start with the first value being list position 0
-    robot.move_joints(joints_list1[0], joints_list1[1], joints_list1[2], joints_list1[3], joints_list1[4],
-                      joints_list1[5])
+    #robot.move_joints(joints_list1[0], joints_list1[1], joints_list1[2], joints_list1[3], joints_list1[4],
+                      # joints_list1[5])
 
     # Now I haven't tested this yet - but we should theoretically be able to achieve this last line of code
     # In a simpler fashion just by using:
     # robot.move_joints(*joints_list1)
 
     # Putting in a user input to continue if we are happy
-    input("press enter to continue")
-    print("continuing")
+    #input("press enter to continue")
+    #print("continuing")
 
     # Now I am just getting this set of coordinates and checking that it outputs the relevant real world values
-    pose2 = robot.get_pose()
-    print("pose 2:", pose2)
+    #pose2 = robot.get_pose()
+    #print("pose 2:", pose2)
 
     # There is nothing to return - so we are just closing the function at this point
     return
