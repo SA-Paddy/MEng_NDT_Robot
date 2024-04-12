@@ -1,0 +1,295 @@
+# We would recommend you run this project through PyCharm.
+# PyCharm community is  free to download from their download section on their website
+# Import the relevant libraries or python files that will be needed to run this code
+# These are needed due to dependencies on them for functions or classes or data processing types
+# This whole project runs in a virtual environment - so until it is packaged into an .exe
+# We will be required to install some of the packages everytime we look to run on a new computer
+# Or everytime we run it on an LSBU computer
+# First and foremost navigate to the 'terminal' window at the bottom of PyCharm
+# Either copy and paste the following or type it in the terminal window:
+# python -m pip install --upgrade pip
+# Once the latest pip installer is installed copy or type  the following:
+# git clone https://github.com/LSBU-Electronics-Lab/ApiTCP_Python_NiryoOne.git
+# This will add a new folder in your project called ApiTCP_Python_NiryoOne
+# Right click on this folder, go to the bottom of the menu and mark directory as a sources root
+# Expand the ApiTCP_Python_NiryoOne folder and find the sub-folder named niryo_one_tcp_client
+# Right click on this folder, go to the bottom of  the menu and mark directory as a sources root
+# Next go back to the terminal and type or copy the following
+# (for each one - wait for it to finish installing before moving  on to the next):
+# pip install numpy
+# pip install serial
+# pip install seaborn
+# pip install pandas
+# You may get error messages saying that it could not find a version that satisfies
+# If you do - dont stress - this just means that the latest version is already probably installed
+
+# ------------ potential errors
+# 1. You may need to update your phased move instructions by passing variables from here to there
+# 2. if your coordinate system appears messed up  in your data -
+#    it might be due to you not having the get pose argument before adjustment in corrected coordinates
+# ------------
+
+from niryo_one_tcp_client import *
+import Coordinate_Script
+import pandas as pd
+import seaborn as sns
+import tkinter as tk
+from tkinter import filedialog
+from tkinter import messagebox
+from tkinter import simpledialog
+import Menu
+import serial
+import serial.tools.list_ports
+import time
+import matplotlib.pyplot as plt
+
+# Function Definitions
+# Function for establishing robot connections
+def robot_connect(robot_IP_address):
+    print("started robot connection protocol")
+
+    try:
+
+        #Run connection instruction
+        robot.connect(robot_IP_address)
+
+        #Run auto calibration instruction
+        robot.calibrate(CalibrateMode.AUTO)
+
+        # Here we need to run the code to ensure the linear  rail is in the start position
+        print('You still have yet to written the starting code to ensure linear rail is at start')
+
+        # First lets make sure that we are starting from the sleep position
+        # In the first instance we get the current joint angles for all 6 joints
+        # We place this information in an object we call joints_start
+        joints_start = robot.get_joints()
+
+        # The request returns a two part list formatted as [True, [j1, j2, j3, j4, j5, j6]]
+        # This is pretty useless to us as we cant undertake comparative analysis
+        # We need to pull just the joint angles out
+        # We will place the joint angles in an object called joints_start_list
+        # joints_start_list will have the following formatting [j1, j2, j3, j4, j5, j6]
+        joints_start_list = joints_start[1]
+
+        # Now we undertake the comparative analysis to check if we are starting from the sleep position
+        # this code effectively says that if the joints_start_list does not match sleep_joints then do the attributed action
+        if joints_start_list != sleep_joints:
+
+            # The attributed action is to move the robot to the position defined by sleep_joints
+            robot.move_joints(*sleep_joints)
+
+            # The following just tells the interpreter to pass by this code if joints_start_list was a match to sleep_joints
+        else:
+            pass
+
+        # All we are doing here is saving the starting real coordinates to an object incase we need it later
+        pose_at_start = robot.get_pose()
+
+        # If we have made it this  far in the code without an error then clearly the connection was successful
+        robot_connected = True
+
+    # All this code does is 'handle errors gracefully'
+    # Any error is caught in the object e which can then be printed as a  message to aid in debugging
+    except Exception as e:
+        print("failed to connect: ", e)
+
+    # We should ask the user if they want to abort in the event that the robot connection
+    # Was unsuccessful
+
+    continue_response = messagebox.askquestion("Continue or Exit", "Do you want to continue?")
+    if result != "yes":
+        print("Ok - aborting connection attempt")
+        exit()
+    else:
+        print("continuing")
+
+
+
+    #if not robot_connected:
+        # Ask the user for a yes/no response
+        #continue_response = input("Do you want to continue (yes/no): ", )
+        # Any response other than yes in lowercase will result in the program aborting
+        #if continue_response != "yes":
+            #print("Aborting Script")
+            #exit()
+        #else:
+            #pass
+
+    return(robot_connected)
+
+#Function for determining COM port
+def find_com_ports():
+    com_ports = serial.tools.list_ports.comports()
+    return com_ports
+
+#Function for determining IP address
+def get_ip_address():
+    root = tk.Tk()
+    root.withdraw()  # Hide the main window
+
+    # Partially filled IP address
+    default_ip = "192.168.1."
+
+    # Create a dialog window for IP address entry
+    ip_window = tk.Toplevel(root)
+    ip_window.title("IP Address")
+
+    # Create and position the label and entry widget for IP address input
+    label = tk.Label(ip_window, text="Enter the IP address:")
+    label.pack()
+
+    entry = tk.Entry(ip_window)
+    entry.insert(tk.END, default_ip)  # Set default value
+    entry.pack()
+
+    # Add a button to confirm the IP address selection
+    confirm_button = tk.Button(ip_window, text="OK", command=ip_window.destroy)
+    confirm_button.pack()
+
+    # Calculate the position to center the window
+    window_width = 300
+    window_height = 100
+    screen_width = ip_window.winfo_screenwidth()
+    screen_height = ip_window.winfo_screenheight()
+    x = (screen_width - window_width) // 2
+    y = (screen_height - window_height) // 2
+
+    # Set the geometry attributes for the IP address window
+    ip_window.geometry(f"{window_width}x{window_height}+{x}+{y}")
+
+    # Start a local event loop to handle window events
+    ip_window.mainloop()
+
+    # Get the IP address from the entry widget
+    ip_address = entry.get()
+
+    # If the user cancels the dialog, set the IP address to None
+    if not ip_address:
+        ip_address = ""
+
+    return ip_address
+
+#Function for the COM port drop down
+def select_com_port_with_dropdown(com_ports):
+    top = tk.Toplevel()
+    top.title("Select COM Port")
+
+    selected_port = tk.StringVar(top)
+
+    # Set default value to COM port name
+    selected_port.set(com_ports[0][0])
+
+    # Create dropdown menu with COM port name and device identification
+    options = ["{} - {}".format(port[0], port[1]) for port in com_ports]
+    option_menu = tk.OptionMenu(top, selected_port, *options)
+    option_menu.pack()
+
+    # Define a function to destroy the window and continue
+    def on_ok():
+        top.destroy()
+        top.quit()
+
+    confirm_button = tk.Button(top, text="OK", command=on_ok)
+    confirm_button.pack()
+
+    # Position the window at the center of the screen
+    window_width = 300
+    window_height = 150
+    screen_width = top.winfo_screenwidth()
+    screen_height = top.winfo_screenheight()
+    x = (screen_width - window_width) // 2
+    y = (screen_height - window_height) // 2
+    top.geometry(f"{window_width}x{window_height}+{x}+{y}")
+
+    # Start a local event loop to handle window events
+    top.mainloop()
+
+    return selected_port.get()
+
+
+# Function to start the program
+def start_program():
+
+    global robot_IP_address
+    global abort_connection
+
+    # Find available COM ports
+    com_ports = [(port.device, port.description) for port in find_com_ports()]
+    if com_ports:
+        # Select COM port
+        com_port = select_com_port_with_dropdown(com_ports)
+        print("COM Port selected:", com_port)
+    else:
+        print("No COM ports found.")
+
+    # Get the IP address from the user
+    robot_IP_address = get_ip_address()
+    print("IP Address:", robot_IP_address)
+    if robot_IP_address == "":
+        print("Aborting connection")
+        abort_connection = True
+
+
+def run_connection_protocol():
+    # Add your code for running the connection protocol here
+    print("Running Connection Protocol")
+    start_program()
+    print("robot_IP_address", robot_IP_address)
+    robot_connect(robot_IP_address)
+
+
+def run_test():
+    # Add your code for running the test here
+    print("Running Test")
+
+def analyse_saved_file():
+    # Add your code for analyzing saved files here
+    print("Analyzing Saved File")
+
+def interrupt_close_robot():
+    # Add your code for interrupting and closing the robot here
+    print("Interrupting and Closing Robot")
+
+def reset_ip_and_com():
+    # Add your code for resetting IP and COM here
+    print("Resetting IP and COM")
+
+def close_program():
+    # Confirm if the user wants to close the program
+    if messagebox.askokcancel("Close Program", "Are you sure you want to close the program?"):
+        root.destroy()
+
+#Define some global variables
+abort_connection = False
+robot_IP_address = ""
+com_port = ""
+
+#Define the robot
+robot = NiryoOneClient()
+
+# Create the main window
+#root = tk.Tk()
+#root.title("Options")
+
+# Create buttons for each option
+#connection_protocol_button = tk.Button(root, text="Run Connection Protocol", command=run_connection_protocol)
+#connection_protocol_button.pack()
+
+#run_test_button = tk.Button(root, text="Run Test", command=run_test)
+#run_test_button.pack()
+
+#analyse_saved_file_button = tk.Button(root, text="Analyse Saved File", command=analyse_saved_file)
+#analyse_saved_file_button.pack()
+
+#interrupt_close_robot_button = tk.Button(root, text="Interrupt and Close Robot", command=interrupt_close_robot)
+#interrupt_close_robot_button.pack()
+
+#reset_ip_and_com_button = tk.Button(root, text="Reset IP and COM", command=reset_ip_and_com)
+#reset_ip_and_com_button.pack()
+
+#close_program_button = tk.Button(root, text="Close Program", command=close_program)
+#close_program_button.pack()
+
+# Run the main event loop
+#root.mainloop()
+start_program()
